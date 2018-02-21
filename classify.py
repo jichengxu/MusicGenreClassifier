@@ -19,14 +19,6 @@ K = 5
 def read_data(path_to_file):
     data = np.genfromtxt(path_to_file, delimiter=None)
     return knnclassifier.knnClassifer(data[:,1:],data[:,0])
-    
-def test_learner():
-    test_train = np.asarray([[1,1,1,1,1],[2,3,1,1,1],[3,3,3,3,3]])
-    classes = np.asarray(['jazz','classical','jazz'])
-    test_pre = np.asarray([[1,1,1,1,1]])
-
-    classify = knnclassifier.knnClassifer(test_train,classes)
-    print(classify.predict(test_pre,5))
 
 if __name__ == "__main__":
     if PREPROCESS:
@@ -41,12 +33,9 @@ if __name__ == "__main__":
         if filename.endswith(".wav"): 
             file_path = os.path.join(directory, filename)
             print("loading prediction: " + file_path)
-            (rate,sig) = wav.read(file_path)
-            mfcc_feat = mfcc(sig,rate,numcep=13,)
-            #print(mfcc_feat.ravel()[:FEATURE_COUNT])
             output_file.write(filename + 
                               " predicted as: " + 
-                              Music.decrypt(classifier.predict(mfcc_feat.ravel()[:FEATURE_COUNT],K)) + '\n')
+                              Music.decrypt(Music.numcepGen(filename),K) + '\n')
     output_file.close()
     
 
